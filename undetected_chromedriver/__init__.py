@@ -46,6 +46,7 @@ from .patcher import Patcher
 from .reactor import Reactor
 from .webelement import UCWebElement
 from .webelement import WebElement
+from .proxy import get_proxy_extension
 
 
 __all__ = (
@@ -125,6 +126,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         debug=False,
         no_sandbox=True,
         user_multi_procs: bool = False,
+        proxy: dict | None = None,
         **kw,
     ):
         """
@@ -294,6 +296,9 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
         if user_data_dir:
             options.add_argument("--user-data-dir=%s" % user_data_dir)
+        
+        if proxy:
+            options.add_argument(f"--load-extension={get_proxy_extension(proxy)}")
 
         language, keep_user_data_dir = None, bool(user_data_dir)
 
