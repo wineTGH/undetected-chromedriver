@@ -17,7 +17,7 @@ by UltrafunkAmsterdam (https://github.com/ultrafunkamsterdam)
 from __future__ import annotations
 
 
-__version__ = "3.5.3"
+__version__ = "3.5.4"
 
 import json
 import logging
@@ -400,7 +400,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         if no_sandbox:
             options.arguments.extend(["--no-sandbox", "--test-type"])
 
-        if headless:
+        if headless or getattr(options, 'headless', None):
             #workaround until a better checking is found
             try:
                 if self.patcher.version_main < 108:
@@ -490,7 +490,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         else:
             self._web_element_cls = WebElement
 
-        if headless:
+        if headless or getattr(options, 'headless', None):
             self._configure_headless()
 
     def _configure_headless(self):
